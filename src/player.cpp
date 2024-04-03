@@ -15,7 +15,8 @@ Player::Player() {
   try {
     m_midiout = new RtMidiOut();
     m_midiin = new RtMidiIn();
-    m_midiclock = new RtMidiIn();
+    m_midiclock = new RtMidiIn(RtMidi::Api::UNSPECIFIED, "RtMidi Input Client", 1024);
+    display_available_in_devices();
     display_available_out_devices();
 
     int out_port;
@@ -38,6 +39,7 @@ Player::Player() {
     // queue.
     m_midiin->setCallback(&on_midi_in);
     m_midiclock->setCallback(&on_midi_clock);
+
     // Don't ignore sysex, timing, or active sensing messages.
     m_midiin->ignoreTypes(false, false, false);
   } catch (RtMidiError &error) {
@@ -69,25 +71,27 @@ void Player::display_available_out_devices() {
       delete m_midiout;
       exit(EXIT_FAILURE);
     }
-    std::cout << i << ": " << portName << '\n';
+    // std::cout << i + 1 << ": " << portName << '\n';
+    std::cout << "  Output Port #" << i << ": " << portName << '\n';
+
   }
   std::cout << '\n';
 }
 
 void Player::display_available_in_devices() {
   // Check outputs.
-  unsigned int nPorts = m_midiout->getPortCount();
-  std::cout << "\nThere are " << nPorts << " MIDI output ports available.\n";
+  unsigned int nPorts = m_midiin->getPortCount();
+  std::cout << "\nThere are " << nPorts << " MIDI input ports available.\n";
   std::string portName;
   for (unsigned int i = 0; i < nPorts; i++) {
     try {
-      portName = m_midiout->getPortName(i);
+      portName = m_midiin->getPortName(i);
     } catch (RtMidiError &error) {
       error.printMessage();
-      delete m_midiout;
+      delete m_midiin;
       exit(EXIT_FAILURE);
     }
-    std::cout << "  Output Port #" << i + 1 << ": " << portName << '\n';
+    std::cout << "  Input Port #" << i << ": " << portName << '\n';
   }
   std::cout << '\n';
 }
@@ -96,7 +100,6 @@ void Player::phrase_tick() {
   Player *player = get_instance();
 
   if (s_note_time > s_current_phrase[s_current_time][2] + 1) {
-
     player->play_chord(s_current_phrase[s_current_time][0], 3,
                        s_current_phrase[s_current_time][1], 0);
     player->play_chord(s_current_phrase[s_current_time][0], 2, 2, 1);
@@ -170,6 +173,7 @@ void Player::drums_tick() {
 void Player::on_midi_clock(double deltatime,
                            std::vector<unsigned char> *message,
                            void *userData) {
+
   unsigned int nBytes = message->size();
   // note clock
   if ((*message)[1] == (unsigned char)60 &&
@@ -192,10 +196,11 @@ void Player::on_midi_clock(double deltatime,
 void Player::on_midi_in(double deltatime, std::vector<unsigned char> *message,
                         void *userData) {
 
-  // std::cout << (int)message->at(0) << std::endl;
   if ((*message)[0] == (unsigned char)176 &&
       (*message)[1] == (unsigned char)2) {
 
+    std::cout << s_current_time << std::endl;
+    // std::cout << (int)message->at(0) << std::endl;
     s_phrase.set_speed(4);
 
     if ((int)message->at(2) > 32) {

@@ -1,88 +1,73 @@
+# Create project
+cmake_minimum_required(VERSION 3.25 FATAL_ERROR)
 
-if(UNIX)
-# Set minimum CMake required version for this project.
-cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
-
-# Define a C++ project.
+# Add project name
 project(main)
 
-include_directories(
-        ${PROJECT_SOURCE_DIR}/include
-)
-
 # specify the C++ standard
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+# set(CMAKE_CXX_STANDARD_REQUIRED ON)
+# set(CMAKE_CXX_EXTENSIONS OFF)
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
-# CoreMIDI
-list(APPEND API_DEFS "-D__MACOSX_CORE__")
-list(APPEND API_LIST "coremidi")
-list(APPEND LINKLIBS "-framework CoreServices")
-list(APPEND LINKLIBS "-framework CoreAudio")
-list(APPEND LINKLIBS "-framework CoreMIDI")
-list(APPEND LINKLIBS "-framework CoreFoundation")
-list(APPEND LINKFLAGS "-Wl,-F/Library/Frameworks")
+# Build the rtmidi library
+add_subdirectory(libs/rtmidi)
+
 
 # include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(${PROJECT_SOURCE_DIR}/include ${PROJECT_SOURCE_DIR}/libs/rtmidi)
+# include_directories(${PROJECT_SOURCE_DIR}/include ${RTMIDI_INCLUDE_DIRS})
 
-find_library(RTMIDI rtmidi REQUIRED)
-
-find_package(nlohmann_json 3.2.0 REQUIRED)
-
-file(GLOB all_SRCS
-    "${PROJECT_SOURCE_DIR}/src/*.cpp"
+set(SOURCES 
+    ${PROJECT_SOURCE_DIR}/src/main.cpp 
+    ${PROJECT_SOURCE_DIR}/src/player.cpp 
+    ${PROJECT_SOURCE_DIR}/src/phrase.cpp 
+    ${PROJECT_SOURCE_DIR}/src/range.cpp 
+    # ${PROJECT_SOURCE_DIR}/include/intervals.hpp 
+    # ${PROJECT_SOURCE_DIR}/include/json.hpp 
+    # ${PROJECT_SOURCE_DIR}/include/phrase.hpp 
+    # ${PROJECT_SOURCE_DIR}/include/player.hpp 
+    # ${PROJECT_SOURCE_DIR}/include/range.hpp 
+    # ${PROJECT_SOURCE_DIR}/include/notes.hpp 
 )
 
-add_executable(main ${all_SRCS})
-
-target_link_libraries (main ${RTMIDI})
-target_link_libraries(main ${LINKLIBS})
-target_link_libraries(main nlohmann_json::nlohmann_json)
-
-else()
-
-# Set minimum CMake required version for this project.
-cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
-
-# Define a C++ project.
-project(main-win)
-
-include_directories(
-        ${PROJECT_SOURCE_DIR}/include
-)
-
-# specify the C++ standard
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+# file(GLOB all_SRCS
+#     "${PROJECT_SOURCE_DIR}/src/*.cpp"
+#     # "${PROJECT_SOURCE_DIR}/include/*.hpp"
+# )
 
 
-set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-
-# CoreMIDI
-list(APPEND API_DEFS "-D__WINDOWS_MM__")
-list(APPEND API_LIST "winmm")
-list(APPEND LINKLIBS winmm) 
-
-# include_directories(${PROJECT_SOURCE_DIR}/include)
-
-find_library(RTMIDI rtmidi REQUIRED)
-
-find_package(nlohmann_json 3.2.0 REQUIRED)
-
-file(GLOB all_SRCS
-    "${PROJECT_SOURCE_DIR}/src/*.cpp"
-)
-
-add_executable(main ${all_SRCS})
-
-target_link_libraries (main ${RTMIDI})
-target_link_libraries(main ${LINKLIBS})
-target_link_libraries(main nlohmann_json::nlohmann_json)
+# Add executable
+add_executable(main ${SOURCES})
+# add_executable(main 
+#     src/main.cpp
+#     src/phrase.cpp 
+#     src/player.cpp 
+#     src/range.cpp 
+#     src/test.cpp 
+#     include/intervals.hpp 
+#     include/json.hpp 
+#     include/notes.hpp 
+#     include/phrase.hpp 
+#     include/player.hpp 
+#     include/range.hpp 
+#     include/test.hpp 
+# )
+# add_executable(test src/main.cpp)
+# add_executable(main ${all_SRCS})
 
 
-endif()
+# target_include_directories(test PRIVATE
+#                           "${PROJECT_BINARY_DIR}"
+#                           "${PROJECT_SOURCE_DIR}/libs/rtmidi"
+#                           "${PROJECT_SOURCE_DIR}/libs/nlohmann"
+#                           "${PROJECT_SOURCE_DIR}/include"
+#                           )
+
+# target_include_directories(test PRIVATE ${PROJECT_SOURCE_DIR}/include)
+
+# target_link_directories(main PUBLIC ${CMAKE_SOURCE_DIR}/libs/rtmidi)
+target_link_libraries(main PRIVATE rtmidi)
+
+# Take care to select proper CmakeLists.txt configuration for cmake

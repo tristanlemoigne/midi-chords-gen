@@ -4,7 +4,7 @@
 #include <fstream>
 #include <iostream>
 #include <map>
-#include <nlohmann/json.hpp>
+#include "json.hpp"
 #include <vector>
 
 class Phrase {
@@ -19,6 +19,6 @@ public:
   void populate();
   void set_speed(unsigned int);
   std::vector<std::vector<unsigned int>> generate_phrase();
-  std::vector<std::map<unsigned int, std::vector<unsigned int>>>
-  generate_drums_phrase();
+  // std::vector<std::map<unsigned int, std::vector<unsigned int>>>
+  // generate_drums_phrase();
 };

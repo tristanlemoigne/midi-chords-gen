@@ -1,12 +1,13 @@
-#include <CoreFoundation/CFRunLoop.h>
-#include <CoreMIDI/CoreMIDI.h>
+// #include <CoreFoundation/CFRunLoop.h>
+// #include <CoreMIDI/CoreMIDI.h>
 #include <fstream>
 #include <iostream>
-#include <rtmidi/rtmidi.h>
+// #include <rtmidi/rtmidi.h>
 #include <string>
 #include <vector>
 
-#include <nlohmann/json.hpp>
+#include "rtmidi.h"
+#include "../include/json.hpp"
 
 #include "../include/phrase.hpp"
 #include "../include/player.hpp"

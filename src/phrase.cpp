@@ -2,7 +2,7 @@
 
 Phrase::Phrase() {
   // read a JSON file
-  std::ifstream file("data/data.json");
+  std::ifstream file("../data/data.json");
   file >> m_tree;
 
   int user_input = 0;
@@ -74,8 +74,8 @@ std::vector<std::vector<unsigned int>> Phrase::generate_phrase() {
   return notes;
 }
 
-std::vector<std::map<unsigned int, std::vector<unsigned int>>>
-Phrase::generate_drums_phrase() {}
+// std::vector<std::map<unsigned int, std::vector<unsigned int>>>
+// Phrase::generate_drums_phrase() {}
 
 void Phrase::populate() {
   for (unsigned int i = 1; i <= 3; i++) {

@@ -1,10 +1,11 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include <CoreFoundation/CFRunLoop.h>
-#include <CoreMIDI/CoreMIDI.h>
+// #include <CoreFoundation/CFRunLoop.h>
+// #include <CoreMIDI/CoreMIDI.h>
 #include <iostream>
-#include <rtmidi/rtmidi.h>
+// #include <rtmidi/rtmidi.h>
+#include "rtmidi.h"
 
 #include "notes.hpp"
 #include "phrase.hpp"
