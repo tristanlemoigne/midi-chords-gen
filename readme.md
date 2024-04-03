@@ -22,3 +22,10 @@ This project generates procedural chords progressions.
 ### Run Program
 
 `bin/main`
+
+
+## TODO 
+- Improve logs, more intuitive gui
+- Clean
+- Update Readme
+- Create a first release

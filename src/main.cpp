@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "rtmidi.h"
-#include "../include/json.hpp"
+#include "json.hpp"
 
 #include "../include/phrase.hpp"
 #include "../include/player.hpp"

@@ -65,8 +65,12 @@ add_executable(main ${SOURCES})
 #                           "${PROJECT_SOURCE_DIR}/include"
 #                           )
 
-# target_include_directories(test PRIVATE ${PROJECT_SOURCE_DIR}/include)
 
+# Indique à Cmake où chercher les en-têtes des librairies
+target_include_directories(main PRIVATE ${PROJECT_SOURCE_DIR}/libs/nlohmann)
+
+
+# target_include_directories(test PRIVATE ${PROJECT_SOURCE_DIR}/include)
 # target_link_directories(main PUBLIC ${CMAKE_SOURCE_DIR}/libs/rtmidi)
 target_link_libraries(main PRIVATE rtmidi)
 
