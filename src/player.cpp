@@ -16,23 +16,27 @@ Player::Player() {
     m_midiout = new RtMidiOut();
     m_midiin = new RtMidiIn();
     m_midiclock = new RtMidiIn(RtMidi::Api::UNSPECIFIED, "RtMidi Input Client", 1024);
+   
     display_available_in_devices();
     display_available_out_devices();
 
-    int out_port;
-    std::cout << "choose midi out port : ";
-    std::cin >> out_port;
-    m_midiout->openPort(out_port);
-
     int in_port;
-    std::cout << "choose midi in port : ";
+    std::cout << "Choose LEAPDATA Input port: ";
+    // std::cout << "choose midi in port : ";
     std::cin >> in_port;
     m_midiin->openPort(in_port);
 
     int clock_port;
-    std::cout << "choose midi clock port : ";
+    std::cout << "Choose CLOCK Output port: ";
+    // std::cout << "choose midi clock port : ";
     std::cin >> clock_port;
     m_midiclock->openPort(clock_port);
+
+    int out_port;
+    std::cout << "Choose NOTES Output port: ";
+    // std::cout << "choose midi out port : ";
+    std::cin >> out_port;
+    m_midiout->openPort(out_port);
 
     // Set our callback function.  This should be done immediately after
     // opening the port to avoid having incoming messages written to the
@@ -61,7 +65,7 @@ Player *Player::get_instance() {
 void Player::display_available_out_devices() {
   // Check outputs.
   unsigned int nPorts = m_midiout->getPortCount();
-  std::cout << "\nThere are " << nPorts << " MIDI output ports available.\n";
+  std::cout << "Here are the " << nPorts << " MIDI OUTPUTS ports available:\n";
   std::string portName;
   for (unsigned int i = 0; i < nPorts; i++) {
     try {
@@ -72,7 +76,7 @@ void Player::display_available_out_devices() {
       exit(EXIT_FAILURE);
     }
     // std::cout << i + 1 << ": " << portName << '\n';
-    std::cout << "  Output Port #" << i << ": " << portName << '\n';
+    std::cout << "Output port #" << i << ": " << portName << '\n';
 
   }
   std::cout << '\n';
@@ -81,7 +85,7 @@ void Player::display_available_out_devices() {
 void Player::display_available_in_devices() {
   // Check outputs.
   unsigned int nPorts = m_midiin->getPortCount();
-  std::cout << "\nThere are " << nPorts << " MIDI input ports available.\n";
+  std::cout << "Here are the " << nPorts << " MIDI INPUTS ports available:\n";
   std::string portName;
   for (unsigned int i = 0; i < nPorts; i++) {
     try {
@@ -91,7 +95,7 @@ void Player::display_available_in_devices() {
       delete m_midiin;
       exit(EXIT_FAILURE);
     }
-    std::cout << "  Input Port #" << i << ": " << portName << '\n';
+    std::cout << "Input port #" << i << ": " << portName << '\n';
   }
   std::cout << '\n';
 }
@@ -212,7 +216,7 @@ void Player::on_midi_in(double deltatime, std::vector<unsigned char> *message,
     }
 
     if (s_current_time == 3) {
-      std::cout << "generation asked" << std::endl;
+      std::cout << "Generation asked" << std::endl;
       s_need_regeneration = true;
     }
   }

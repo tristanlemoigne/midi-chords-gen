@@ -28,4 +28,7 @@ This project generates procedural chords progressions.
 - Improve logs, more intuitive gui
 - Clean
 - Update Readme
+- Make a standalone binary
 - Create a first release
+
+- Launch genereator before TD & Ableton to prevent errors

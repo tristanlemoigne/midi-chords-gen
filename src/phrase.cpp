@@ -8,7 +8,7 @@ Phrase::Phrase() {
   int user_input = 0;
 
   while (!user_input) {
-    std::cout << "choose a speed factor: ";
+    std::cout << "Choose a speed factor: ";
     std::cin >> user_input;
     std::cout << std::endl;
 
@@ -43,9 +43,9 @@ std::vector<std::vector<unsigned int>> Phrase::generate_phrase() {
       filled_times += duration;
     }
 
-    std::cout << "m_tree.size() : " << m_tree.size() << std::endl;
-    std::cout << "current_state : " << current_state << std::endl;
-    std::cout << "duration : " << duration << std::endl;
+    // std::cout << "m_tree.size() : " << m_tree.size() << std::endl;
+    // std::cout << "current_state : " << current_state << std::endl;
+    // std::cout << "duration : " << duration << std::endl;
 
     notes[notes.size() - 1].push_back(duration);
 
@@ -57,11 +57,11 @@ std::vector<std::vector<unsigned int>> Phrase::generate_phrase() {
     unsigned int accumulator = 0;
     unsigned int j = 0;
 
-    for (int k = 0; k < notes[i].size(); k++) {
-      std::cout << notes[i][k] << ",";
-    }
-    std::cout << std::endl;
-    std::cout << std::endl;
+    // for (int k = 0; k < notes[i].size(); k++) {
+    //   std::cout << notes[i][k] << ",";
+    // }
+    // std::cout << std::endl;
+    // std::cout << std::endl;
 
     do {
       accumulator += (unsigned int)m_tree[current_state][j];
@@ -81,7 +81,7 @@ void Phrase::populate() {
   for (unsigned int i = 1; i <= 3; i++) {
     for (unsigned int j = 0; j < 7; j++) {
       m_params.push_back(std::vector<unsigned int>{j, i + 3});
-      std::cout << "[ " << j << ";" << i + 2 << " ]" << std::endl;
+      // std::cout << "[ " << j << ";" << i + 2 << " ]" << std::endl;
     }
   }
 
