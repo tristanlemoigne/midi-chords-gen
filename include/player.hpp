@@ -1,12 +1,7 @@
-#ifndef PLAYER_H
-#define PLAYER_H
+#pragma once
 
-// #include <CoreFoundation/CFRunLoop.h>
-// #include <CoreMIDI/CoreMIDI.h>
 #include <iostream>
-// #include <rtmidi/rtmidi.h>
 #include "rtmidi.h"
-
 #include "notes.hpp"
 #include "phrase.hpp"
 #include "range.hpp"
@@ -49,5 +44,3 @@ public:
   static void on_midi_in(double deltatime, std::vector<unsigned char> *message,
                          void *userData);
 };
-
-#endif

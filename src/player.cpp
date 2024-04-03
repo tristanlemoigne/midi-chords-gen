@@ -22,19 +22,16 @@ Player::Player() {
 
     int in_port;
     std::cout << "Choose LEAPDATA Input port: ";
-    // std::cout << "choose midi in port : ";
     std::cin >> in_port;
     m_midiin->openPort(in_port);
 
     int clock_port;
     std::cout << "Choose CLOCK Output port: ";
-    // std::cout << "choose midi clock port : ";
     std::cin >> clock_port;
     m_midiclock->openPort(clock_port);
 
     int out_port;
     std::cout << "Choose NOTES Output port: ";
-    // std::cout << "choose midi out port : ";
     std::cin >> out_port;
     m_midiout->openPort(out_port);
 
@@ -75,9 +72,7 @@ void Player::display_available_out_devices() {
       delete m_midiout;
       exit(EXIT_FAILURE);
     }
-    // std::cout << i + 1 << ": " << portName << '\n';
     std::cout << "Output port #" << i << ": " << portName << '\n';
-
   }
   std::cout << '\n';
 }
@@ -108,19 +103,21 @@ void Player::phrase_tick() {
                        s_current_phrase[s_current_time][1], 0);
     player->play_chord(s_current_phrase[s_current_time][0], 2, 2, 1);
     s_note_time = 0;
-    // std::cout << "curr time -> " << s_current_time << std::endl;
+
     if (s_current_time == 1 && s_need_modulation) {
       player->modulate();
     }
+
     if (s_current_time == 0 && s_need_regeneration) {
       std::cout << "restart" << std::endl;
       s_current_phrase = s_phrase.generate_phrase();
       s_need_regeneration = false;
     }
+
     s_current_time = (s_current_time + 1) % s_current_phrase.size();
   }
+
   s_note_time++;
-  // std::cout << s_note_time << std::endl;
 }
 
 void Player::modulate() {
@@ -169,10 +166,9 @@ void Player::modulate() {
   }
 }
 
-void Player::drums_tick() {
-  s_current_drums_time = (s_current_drums_time + 1) % 64;
-  //   std::cout << "drums clock : " << s_current_drums_time << std::endl;
-}
+// void Player::drums_tick() {
+//   s_current_drums_time = (s_current_drums_time + 1) % 64;
+// }
 
 void Player::on_midi_clock(double deltatime,
                            std::vector<unsigned char> *message,
@@ -186,15 +182,10 @@ void Player::on_midi_clock(double deltatime,
   }
 
   // drums clock
-  if ((*message)[1] == (unsigned char)60 &&
-      (*message)[0] == (unsigned char)145) {
-    drums_tick();
-  }
-
-  //   for (unsigned int i = 0; i < nBytes; i++)
-  //     std::cout << "Byte " << i << " = " << (int)message->at(i) << ", ";
-  //   if (nBytes > 0)
-  //     std::cout << "stamp = " << deltatime << std::endl;
+  // if ((*message)[1] == (unsigned char)60 &&
+  //     (*message)[0] == (unsigned char)145) {
+  //   drums_tick();
+  // }
 }
 
 void Player::on_midi_in(double deltatime, std::vector<unsigned char> *message,
@@ -203,8 +194,7 @@ void Player::on_midi_in(double deltatime, std::vector<unsigned char> *message,
   if ((*message)[0] == (unsigned char)176 &&
       (*message)[1] == (unsigned char)2) {
 
-    std::cout << s_current_time << std::endl;
-    // std::cout << (int)message->at(0) << std::endl;
+    // std::cout << s_current_time << std::endl;
     s_phrase.set_speed(4);
 
     if ((int)message->at(2) > 32) {
@@ -220,29 +210,6 @@ void Player::on_midi_in(double deltatime, std::vector<unsigned char> *message,
       s_need_regeneration = true;
     }
   }
-
-  //   if ((*message)[0] == (unsigned char)176 &&
-  //       (*message)[1] == (unsigned char)2) {
-
-  //     if (s_current_time == 0) {
-  //       s_need_modulation = true;
-  //     }
-  //   }
-  // if((*message)[0] == (unsigned char)179 && (*message)[1] == (unsigned
-  // char)1) {
-  //     // std::cout << "melody axis y" << std::endl;
-  // }
-
-  // if((*message)[0] == (unsigned char)179 && (*message)[1] == (unsigned
-  // char)2) {
-  //     // std::cout << "melody axis z" << std::endl;
-  // }
-
-  //   unsigned int nBytes = message->size();
-  //   for (unsigned int i = 0; i < nBytes; i++)
-  //     std::cout << "Byte " << i << " = " << (int)message->at(i) << ", ";
-  //   if (nBytes > 0)
-  //     std::cout << "stamp = " << deltatime << std::endl;
 }
 
 void Player::play_chord(int note, int octave, int number,
@@ -259,8 +226,6 @@ void Player::play_chord(int note, int octave, int number,
   // Note Off
   m_message[0] = first_byte;
   while (m_pressed[channel].size() > 0) {
-    // std::cout << "note off : " << m_pressed[m_pressed.size() - 1][1] <<
-    // std::endl;
     m_message[0] = 128 + channel;
     m_message[1] = m_pressed[channel][m_pressed[channel].size() - 1];
     m_pressed[channel].pop_back();

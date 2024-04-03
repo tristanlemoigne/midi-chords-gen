@@ -1,10 +1,8 @@
-#ifndef RANGE_H
-#define RANGE_H
+#pragma once
 
 #include <cmath>
 #include <iostream>
 #include <vector>
-
 #include "notes.hpp"
 
 class Range {
@@ -30,16 +28,12 @@ public:
     for (int i = 0; i < m_intervals.size(); i++) {
 
       current_note += m_intervals[i];
-      // std::cout << current_note << std::endl;
+      
       m_notes.push_back(current_note);
     }
-
-    // std::cout << "range size : " << m_notes.size() << std::endl;
   }
 
   unsigned char get_note(int, int);
   void set_fundamental(Note);
   Note get_fundamental();
 };
-
-#endif

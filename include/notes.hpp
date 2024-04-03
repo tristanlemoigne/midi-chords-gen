@@ -1,5 +1,4 @@
-#ifndef NOTE_H
-#define NOTE_H
+#pragma once
 
 enum Note {
   C = 0,
@@ -15,5 +14,3 @@ enum Note {
   A_SHARP = 10,
   B = 11,
 };
-
-#endif

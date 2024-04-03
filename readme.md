@@ -1,34 +1,31 @@
 # MIDI EMITTER
-
 This project generates procedural chords progressions.
-
-- Mac only (CoreMidi, CoreFoundation)
-
-### Deps
-
-- rtmidi
-- nlohmann-json
-
-#### Setup & Build
-
-`brew install rtmidi`
-
-`brew install nlohmann-json`
-
-`cmake .`
-
-`cmake --build .`
-
-### Run Program
-
-`bin/main`
-
+Windows only
 
 ## TODO 
-- Improve logs, more intuitive gui
-- Clean
+- Fix generation
 - Update Readme
 - Make a standalone binary
 - Create a first release
 
+ABLETON
+- Fix clock output with TD
+
+TD
+- Clean file
+- add mapping tool
+- perform interface
+- performance optimisation
+
+DOC
 - Launch genereator before TD & Ableton to prevent errors
+- Take care to select proper CmakeLists.txt configuration for cmake
+
+Generate executable : 
+mkdir build
+cd build
+cmake ..
+cmake --build .
+
+Run executable :
+`.\Debug\main` 
