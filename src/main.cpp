@@ -12,5 +12,9 @@
 int main() {
   Player *player = Player::get_instance();
 
+  while(1) {
+    
+  }
+
   return 0;
 }

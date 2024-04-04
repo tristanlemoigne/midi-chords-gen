@@ -1,6 +1,8 @@
 #pragma once
 
 #include <iostream>
+#include <vector>
+
 #include "rtmidi.h"
 #include "notes.hpp"
 #include "phrase.hpp"

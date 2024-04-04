@@ -15,7 +15,8 @@ Player::Player() {
   try {
     m_midiout = new RtMidiOut();
     m_midiin = new RtMidiIn();
-    m_midiclock = new RtMidiIn(RtMidi::Api::UNSPECIFIED, "RtMidi Input Client", 1024);
+    m_midiclock = new RtMidiIn();
+    // m_midiclock = new RtMidiIn(RtMidi::Api::UNSPECIFIED, "RtMidi Input Client", 1024);
    
     display_available_in_devices();
     display_available_out_devices();
@@ -26,7 +27,7 @@ Player::Player() {
     m_midiin->openPort(in_port);
 
     int clock_port;
-    std::cout << "Choose CLOCK Output port: ";
+    std::cout << "Choose CLOCK Input port: ";
     std::cin >> clock_port;
     m_midiclock->openPort(clock_port);
 
@@ -166,35 +167,29 @@ void Player::modulate() {
   }
 }
 
-// void Player::drums_tick() {
-//   s_current_drums_time = (s_current_drums_time + 1) % 64;
-// }
-
 void Player::on_midi_clock(double deltatime,
                            std::vector<unsigned char> *message,
                            void *userData) {
 
   unsigned int nBytes = message->size();
+  
   // note clock
   if ((*message)[1] == (unsigned char)60 &&
       (*message)[0] == (unsigned char)144) {
     phrase_tick();
   }
-
-  // drums clock
-  // if ((*message)[1] == (unsigned char)60 &&
-  //     (*message)[0] == (unsigned char)145) {
-  //   drums_tick();
-  // }
 }
 
 void Player::on_midi_in(double deltatime, std::vector<unsigned char> *message,
                         void *userData) {
 
+  // std::cout << "Ici";
+
   if ((*message)[0] == (unsigned char)176 &&
       (*message)[1] == (unsigned char)2) {
 
-    // std::cout << s_current_time << std::endl;
+    std::cout << s_current_time << std::endl;
+    
     s_phrase.set_speed(4);
 
     if ((int)message->at(2) > 32) {
@@ -243,3 +238,15 @@ void Player::play_chord(int note, int octave, int number,
     m_midiout->sendMessage(&m_message);
   }
 }
+
+
+// void Player::drums_tick() {
+//   s_current_drums_time = (s_current_drums_time + 1) % 64;
+// }
+
+
+// drums clock
+// if ((*message)[1] == (unsigned char)60 &&
+//     (*message)[0] == (unsigned char)145) {
+//   drums_tick();
+// }
