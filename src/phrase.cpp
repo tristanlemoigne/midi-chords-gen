@@ -2,7 +2,7 @@
 
 Phrase::Phrase() {
   // read a JSON file
-  std::ifstream file("../data/data.json");
+  std::ifstream file("data.json");
   file >> m_tree;
 
   int user_input = 0;

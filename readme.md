@@ -32,3 +32,6 @@ cmake --build . ou cmake --build . --clean-first
 
 Run executable :
 `.\Debug\main` 
+
+Build release : 
+cmake --build . --target ALL_BUILD --config Release
